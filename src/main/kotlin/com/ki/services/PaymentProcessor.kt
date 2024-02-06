@@ -13,7 +13,7 @@ class PaymentProcessor {
             val reader = CSVReaderBuilder(file).withSkipLines(1).build()
             while (true) {
                 val line = reader.readNext() ?: break
-                val payment = Payment(line)
+                val payment = Payment(line, source)
                 payments.add(payment)
             }
         } catch (e: IOException) {

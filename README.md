@@ -74,3 +74,12 @@ mvn test
 
 The code base has been written to compile under Java 8 (and Kotlin 1.6.0-RC2) and upwards. Dependencies are managed via Maven, see the `pom.xml` file.
 
+### Notes and Assumptions
+I am assuming, from this wording: 
+> Unlike card payments, our payment provider will only update us once a bank transfer has been successfully processed.
+
+That the bank payment CSV contains only successful transfers. n.b., I am aware that another interpretation of this could have been that the success of the payments must be asynchronously confirmed, following the file's processing, with the csv containing payments with no guarantee of successful processing. Given there was no further alluding to this idea, it was opted to not pursue it.
+
+#### Discrepancies
+It also appears that the expected output, as stated in this readme file, is misaligned vs the actual output when using the local runner files. 
+I will assume this is simply a stale readme, as tests pass. 

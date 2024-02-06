@@ -18,7 +18,10 @@ class PaymentTest {
             AMOUNT, CARD_ID.toString(),
             CARD_STATUS
         )
-        val payment = Payment(data)
+
+        val source = "card"
+        
+        val payment = Payment(data, source)
         Assert.assertEquals(CUSTOMER_ID, payment.customerId)
         Assert.assertEquals(1960, payment.amount)
         Assert.assertEquals(40, payment.fee)
