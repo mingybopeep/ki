@@ -2,13 +2,15 @@ package com.ki.services
 
 import com.ki.Fixture
 import com.ki.models.Card
+import com.ki.models.BankAccount
 import com.ki.models.Payment
 import org.junit.Assert
 import org.junit.Test
 
 class PaymentProcessorTest {
+    // card
     @Test
-    fun testGetPayments() {
+    fun testGetPaymentsCard() {
         val fixturePath = Fixture.getPath("card_payments_mixed.csv")
         val processor = PaymentProcessor()
         val payments = processor.getPayments(fixturePath, "card")
@@ -19,7 +21,7 @@ class PaymentProcessorTest {
     }
 
     @Test
-    fun testGetPaymentsEmpty() {
+    fun testGetPaymentsEmptyCard() {
         val fixturePath = Fixture.getPath("card_payments_empty.csv")
         val processor = PaymentProcessor()
         val payments = processor.getPayments(fixturePath, "card")
@@ -27,10 +29,10 @@ class PaymentProcessorTest {
     }
 
     @Test
-    fun testVerifyPayments() {
-        val payment1 = createPayment("processed")
-        val payment2 = createPayment("declined")
-        val payment3 = createPayment("processed")
+    fun testVerifyPaymentsCard() {
+        val payment1 = createPaymentCard("processed")
+        val payment2 = createPaymentCard("declined")
+        val payment3 = createPaymentCard("processed")
         val payments = arrayOf<Payment>(payment1, payment2, payment3)
         val processor = PaymentProcessor()
         val result = processor.verifyPayments(payments)
@@ -38,11 +40,53 @@ class PaymentProcessorTest {
         Assert.assertArrayEquals(expected, result)
     }
 
-    private fun createPayment(cardStatus: String): Payment {
+    private fun createPaymentCard(cardStatus: String): Payment {
         val card = Card()
         card.status = cardStatus
         val payment = Payment()
         payment.card = card
         return payment
     }
+
+    // bank
+    @Test
+    fun testGetPaymentsBank() {
+        val fixturePath = Fixture.getPath("bank_payments.csv")
+        val processor = PaymentProcessor()
+        val payments = processor.getPayments(fixturePath, "bank")
+        Assert.assertEquals(2, payments.size.toLong())
+        Assert.assertEquals(20, payments[0].bankAccount!!.bankAccountId)
+        Assert.assertEquals(60, payments[1].bankAccount!!.bankAccountId)
+    }
+
+    @Test
+    fun testGetPaymentsEmptyBank() {
+        val fixturePath = Fixture.getPath("bank_payments_empty.csv")
+        val processor = PaymentProcessor()
+        val payments = processor.getPayments(fixturePath, "bank")
+        Assert.assertEquals(0, payments.size.toLong())
+    }
+
+    @Test
+    fun testVerifyPaymentsBank() {
+        val payment1 = createPaymentBankAccount()
+        val payment2 = Payment()
+        val payments = arrayOf<Payment>(payment1, payment2)
+        val processor = PaymentProcessor()
+        val result = processor.verifyPayments(payments)
+        val expected = arrayOf(payment1)
+        Assert.assertArrayEquals(expected, result)
+    }
+
+    fun createPaymentBankAccount (): Payment {
+        val bankAccount = BankAccount()
+        bankAccount.bankAccountId = 123
+        val payment = Payment()
+        payment.bankAccount = bankAccount
+
+        return payment
+    }
+
+
+   
 }

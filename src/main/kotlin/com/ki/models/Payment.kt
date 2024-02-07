@@ -32,12 +32,9 @@ class Payment {
             val bankAccount = BankAccount()
             bankAccount.bankAccountId = data[3].toInt()
             this.bankAccount = bankAccount
-        } else {
-            // todo: error
         }
     }
 
     val isSuccessful: Boolean
-        get() = card?.status == "processed" || bankAccount?.bankAccountId != null
-        //todo - async??
+        get() = card?.status == "processed" || bankAccount != null
 }

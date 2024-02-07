@@ -62,6 +62,8 @@ This should produce the result:
 "345","735"
 ```
 
+*NOTE* content fin, order wrong -- due to grouping and ordering by custid
+
 ### Tests
 
 You can run the tests from the root of the project with:
